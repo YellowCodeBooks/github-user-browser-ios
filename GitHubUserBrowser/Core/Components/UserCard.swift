@@ -1,10 +1,3 @@
-//
-//  UserCard.swift
-//  GitHubUserBrowser
-//
-//  Created by Yellow Code on 26/6/25.
-//
-
 import SwiftUI
 
 struct UserCard: View {

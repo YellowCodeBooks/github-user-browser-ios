@@ -8,25 +8,34 @@ class HomeViewModel: ObservableObject {
     
     private let getUsersUseCase: GetUsersUseCase
     private var cancellables = Set<AnyCancellable>()
+    private var since: Int = 0
+    private var reachedEnd: Bool = false
     
     init(getUsersUseCase: GetUsersUseCase) {
         self.getUsersUseCase = getUsersUseCase
-        loadUsers()
     }
     
     func loadUsers() {
+        guard !isLoading, !reachedEnd else { return }
+        
         isLoading = true
         errorMessage = nil
         
-        getUsersUseCase.execute(since: 0)
-            .sink(receiveCompletion: { [weak self] completion in
+        getUsersUseCase.execute(since: since)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
                 self?.isLoading = false
                 if case .failure(let error) = completion {
                     self?.errorMessage = error.localizedDescription
                 }
-            }, receiveValue: { [weak self] users in
-                self?.users = users
-            })
+            } receiveValue: { [weak self] newUsers in
+                if newUsers.isEmpty {
+                    self?.reachedEnd = true
+                } else {
+                    self?.since += newUsers.count
+                    self?.users.append(contentsOf: newUsers)
+                }
+            }
             .store(in: &cancellables)
     }
 }

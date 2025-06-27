@@ -5,16 +5,45 @@ struct HomeView: View {
     
     var body: some View {
         NavigationView {
-            List(viewModel.users) { user in
-                NavigationLink(destination: DetailView(username: user.login)) {
-                    UserCard(
-                        avatarUrl: user.avatar_url,
-                        title: user.login,
-                        subtitle: user.html_url
-                    )
+            List {
+                ForEach(viewModel.users.indices, id: \.self) { index in
+                    let user = viewModel.users[index]
+                    
+                    NavigationLink(destination: DetailView(username: user.login)) {
+                        UserCard(
+                            avatarUrl: user.avatar_url,
+                            title: user.login,
+                            subtitle: user.html_url
+                        )
+                        .onAppear {
+                            if index == viewModel.users.count - 5 {
+                                viewModel.loadUsers()
+                            }
+                        }
+                    }
+                }
+                
+                if viewModel.isLoading {
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                        Spacer()
+                    }
+                }
+                
+                if let error = viewModel.errorMessage {
+                    Text("Error: \(error)")
+                        .foregroundColor(.red)
+                        .multilineTextAlignment(.center)
+                        .padding(.vertical)
                 }
             }
             .navigationTitle("GitHub Users")
+            .onAppear {
+                if viewModel.users.isEmpty {
+                    viewModel.loadUsers()
+                }
+            }
         }
     }
 }
