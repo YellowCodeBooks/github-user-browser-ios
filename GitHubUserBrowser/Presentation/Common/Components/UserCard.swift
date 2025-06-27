@@ -29,12 +29,11 @@ struct UserCard: View {
     }
 }
 
-#Preview {
+#Preview(traits: .sizeThatFitsLayout) {
     UserCard(
         avatarUrl: "https://avatars.githubusercontent.com/u/1?v=4",
         title: "mojombo",
         subtitle: "https://github.com/mojombo"
     )
     .padding()
-    .previewLayout(.sizeThatFits)
 }

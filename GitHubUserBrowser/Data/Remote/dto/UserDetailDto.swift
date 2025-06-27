@@ -1,6 +1,6 @@
-struct GitHubUserDetail {
+struct UserDetailDto: Decodable {
     let login: String
-    let avatarUrl: String
+    let avatar_url: String
     let location: String?
     let blog: String?
     let followers: Int

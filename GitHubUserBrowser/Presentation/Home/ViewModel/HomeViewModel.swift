@@ -2,7 +2,7 @@ import Foundation
 import Combine
 
 class HomeViewModel: ObservableObject {
-    @Published var users: [GitHubUser] = []
+    @Published var users: [User] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
     

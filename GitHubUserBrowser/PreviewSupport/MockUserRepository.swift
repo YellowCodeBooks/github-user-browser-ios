@@ -2,20 +2,20 @@ import Combine
 import Foundation
 
 class MockUserRepository: UserRepository {
-    let users: [GitHubUser]
+    let users: [User]
 
-    init(users: [GitHubUser]) {
+    init(users: [User]) {
         self.users = users
     }
 
-    func getUsers(since: Int, perPage: Int) -> AnyPublisher<[GitHubUser], Error> {
+    func getUsers(since: Int, perPage: Int) -> AnyPublisher<[User], Error> {
         Just(users)
             .setFailureType(to: Error.self)
             .eraseToAnyPublisher()
     }
     
-    func getUserDetail(username: String) -> AnyPublisher<GitHubUserDetail, Error> {
-        let mockUserDetail = GitHubUserDetail(
+    func getUserDetail(username: String) -> AnyPublisher<UserDetail, Error> {
+        let mockUserDetail = UserDetail(
             login: "mojombo",
             avatarUrl: "https://avatars.githubusercontent.com/u/1?v=4",
             location: "San Francisco",

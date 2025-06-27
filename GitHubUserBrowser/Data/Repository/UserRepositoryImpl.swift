@@ -7,13 +7,13 @@ class UserRepositoryImpl: UserRepository {
         self.apiService = apiService
     }
     
-    func getUsers(since: Int, perPage: Int) -> AnyPublisher<[GitHubUser], Error> {
+    func getUsers(since: Int, perPage: Int) -> AnyPublisher<[User], Error> {
         apiService.getUsers(since: since, perPage: perPage)
             .map { $0.map { $0.toDomain() } }
             .eraseToAnyPublisher()
     }
     
-    func getUserDetail(username: String) -> AnyPublisher<GitHubUserDetail, Error> {
+    func getUserDetail(username: String) -> AnyPublisher<UserDetail, Error> {
         apiService.getUserDetail(username: username)
             .map { $0.toDomain() }
             .eraseToAnyPublisher()

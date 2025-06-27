@@ -68,14 +68,14 @@ struct DetailView: View {
 
 #Preview {
     let mockUsers = [
-        GitHubUser(id: 1, login: "mojombo", avatar_url: "https://avatars.githubusercontent.com/u/1?v=4", html_url: "https://github.com/mojombo"),
-        GitHubUser(id: 2, login: "defunkt", avatar_url: "https://avatars.githubusercontent.com/u/2?v=4", html_url: "https://github.com/defunkt")
+        User(id: 1, login: "mojombo", avatar_url: "https://avatars.githubusercontent.com/u/1?v=4", html_url: "https://github.com/mojombo"),
+        User(id: 2, login: "defunkt", avatar_url: "https://avatars.githubusercontent.com/u/2?v=4", html_url: "https://github.com/defunkt")
     ]
     let mockRepository = MockUserRepository(users: mockUsers)
     let useCase = GetUserDetailUseCase(repository: mockRepository)
     let viewModel = DetailViewModel(getUserDetailUseCase: useCase)
 
-    return NavigationView {
+    NavigationView {
         DetailView(username: "mojombo", viewModel: viewModel)
     }
 }

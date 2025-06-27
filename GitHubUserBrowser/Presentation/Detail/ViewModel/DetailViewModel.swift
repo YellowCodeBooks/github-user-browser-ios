@@ -1,7 +1,7 @@
 import Combine
 
 class DetailViewModel: ObservableObject {
-    @Published var userDetail: GitHubUserDetail?
+    @Published var userDetail: UserDetail?
     @Published var errorMessage: String?
 
     private let getUserDetailUseCase: GetUserDetailUseCase

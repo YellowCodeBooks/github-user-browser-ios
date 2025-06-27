@@ -7,7 +7,7 @@ class GetUsersUseCase {
         self.repository = repository
     }
     
-    func execute(since: Int, perPage: Int = 20) -> AnyPublisher<[GitHubUser], Error> {
+    func execute(since: Int, perPage: Int = 20) -> AnyPublisher<[User], Error> {
         repository.getUsers(since: since, perPage: perPage)
     }
 }

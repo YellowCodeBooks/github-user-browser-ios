@@ -1,4 +1,4 @@
-struct GitHubUser: Identifiable, Codable {
+struct UserDto: Codable {
     let id: Int
     let login: String
     let avatar_url: String
