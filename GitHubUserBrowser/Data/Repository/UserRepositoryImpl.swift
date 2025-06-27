@@ -12,4 +12,10 @@ class UserRepositoryImpl: UserRepository {
             .map { $0.map { $0.toDomain() } }
             .eraseToAnyPublisher()
     }
+    
+    func getUserDetail(username: String) -> AnyPublisher<GitHubUserDetail, Error> {
+        apiService.getUserDetail(username: username)
+            .map { $0.toDomain() }
+            .eraseToAnyPublisher()
+    }
 }
