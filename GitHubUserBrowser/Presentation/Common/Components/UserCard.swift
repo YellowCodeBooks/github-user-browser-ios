@@ -12,8 +12,13 @@ struct UserCard: View {
             } placeholder: {
                 Color.gray.opacity(0.3)
             }
-            .frame(width: 48, height: 48)
+            .frame(width: 70, height: 70)
             .clipShape(Circle())
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color.gray.opacity(0.2))
+                    .frame(width: 78, height: 78)
+            )
             
             VStack(alignment: .leading) {
                 Text(title)
