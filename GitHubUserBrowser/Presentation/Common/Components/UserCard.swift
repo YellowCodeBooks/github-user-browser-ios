@@ -36,7 +36,9 @@ struct UserCard: View {
                             .lineLimit(1)
                             .font(.subheadline)
                     } else {
-                        Image(systemName: "location")
+                        Image("icon_location")
+                            .resizable()
+                            .frame(width: 24, height: 24)
                             .foregroundColor(.gray)
                         Text(subtitle)
                             .foregroundColor(.gray)

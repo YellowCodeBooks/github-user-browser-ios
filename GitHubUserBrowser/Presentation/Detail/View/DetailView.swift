@@ -16,6 +16,7 @@ struct DetailView: View {
                             title: user.login,
                             subtitle: user.location ?? "Unknown"
                         )
+                        .padding(.bottom, 18)
                         
                         HStack(spacing: 24) {
                             FollowerStat(title: "Follower", count: user.followers)
