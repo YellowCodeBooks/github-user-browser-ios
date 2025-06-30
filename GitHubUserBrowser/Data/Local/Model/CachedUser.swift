@@ -3,7 +3,7 @@ import SwiftData
 
 @Model
 class CachedUser {
-    var id: Int
+    @Attribute(.unique) var id: Int
     var login: String
     var avatar_url: String
     var html_url: String

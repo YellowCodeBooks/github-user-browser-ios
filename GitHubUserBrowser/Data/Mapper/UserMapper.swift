@@ -29,10 +29,10 @@ extension User {
 
     func toCachedModel() -> CachedUser {
         return CachedUser(
-            id: id,
-            login: login,
-            avatar_url: avatar_url,
-            html_url: html_url
+            id: self.id,
+            login: self.login,
+            avatar_url: self.avatar_url,
+            html_url: self.html_url
         )
     }
 }

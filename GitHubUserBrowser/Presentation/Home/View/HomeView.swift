@@ -9,7 +9,10 @@ struct HomeView: View {
                 ForEach(viewModel.users.indices, id: \.self) { index in
                     let user = viewModel.users[index]
                     
-                    NavigationLink(destination: DetailView(username: user.login)) {
+                    NavigationLink(destination: DetailView(
+                        username: user.login,
+                        viewModel: DI.detailViewModel(username: user.login)
+                    )) {
                         UserCard(
                             avatarUrl: user.avatar_url,
                             title: user.login,

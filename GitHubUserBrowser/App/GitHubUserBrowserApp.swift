@@ -1,12 +1,12 @@
 import SwiftUI
+import SwiftData
 
 @main
 struct GitHubUserBrowserApp: App {
-    let persistenceController = PersistenceController.shared
-    
     var body: some Scene {
         WindowGroup {
             HomeView(viewModel: DI.homeViewModel())
         }
+        .modelContainer(for: CachedUser.self)
     }
 }
