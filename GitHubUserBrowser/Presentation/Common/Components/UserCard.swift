@@ -18,14 +18,21 @@ struct UserCard: View {
             VStack(alignment: .leading) {
                 Text(title)
                     .font(.headline)
+                Divider()
                 Text(subtitle)
                     .font(.subheadline)
                     .foregroundColor(.blue)
                     .underline()
                     .lineLimit(1)
             }
+            Spacer()
         }
-        .padding(.vertical, 8)
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white)
+                .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
+        )
     }
 }
 

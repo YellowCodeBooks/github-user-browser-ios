@@ -5,41 +5,42 @@ struct HomeView: View {
     
     var body: some View {
         NavigationView {
-            List {
-                ForEach(viewModel.users.indices, id: \.self) { index in
-                    let user = viewModel.users[index]
-                    
-                    NavigationLink(destination: DetailView(
-                        username: user.login,
-                        viewModel: DI.detailViewModel(username: user.login)
-                    )) {
-                        UserCard(
-                            avatarUrl: user.avatar_url,
-                            title: user.login,
-                            subtitle: user.html_url
-                        )
-                        .onAppear {
-                            if index == viewModel.users.count - 5 {
-                                viewModel.loadUsers()
+            ScrollView {
+                LazyVStack(spacing: 12) {
+                    ForEach(viewModel.users.indices, id: \.self) { index in
+                        let user = viewModel.users[index]
+                        
+                        NavigationLink(destination: DetailView(
+                            username: user.login,
+                            viewModel: DI.detailViewModel(username: user.login)
+                        )) {
+                            UserCard(
+                                avatarUrl: user.avatar_url,
+                                title: user.login,
+                                subtitle: user.html_url
+                            )
+                            .onAppear {
+                                if index == viewModel.users.count - 5 {
+                                    viewModel.loadUsers()
+                                }
                             }
                         }
+                        .buttonStyle(PlainButtonStyle())
                     }
-                }
-                
-                if viewModel.isLoading {
-                    HStack {
-                        Spacer()
+                    
+                    if viewModel.isLoading {
                         ProgressView()
-                        Spacer()
+                            .padding(.top, 16)
+                    }
+                    
+                    if let error = viewModel.errorMessage {
+                        Text("Error: \(error)")
+                            .foregroundColor(.red)
+                            .multilineTextAlignment(.center)
+                            .padding(.top, 16)
                     }
                 }
-                
-                if let error = viewModel.errorMessage {
-                    Text("Error: \(error)")
-                        .foregroundColor(.red)
-                        .multilineTextAlignment(.center)
-                        .padding(.vertical)
-                }
+                .padding()
             }
             .navigationTitle("GitHub Users")
             .onAppear {
