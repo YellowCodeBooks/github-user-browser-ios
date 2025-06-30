@@ -4,11 +4,11 @@ import SwiftUI
 
 class UserRepositoryImpl: UserRepository {
     private let apiService: GitHubApiService
-    private let context: ModelContext
+    private let dataActor: DataActor
     
-    init(apiService: GitHubApiService, context: ModelContext) {
+    init(apiService: GitHubApiService, dataActor: DataActor) {
         self.apiService = apiService
-        self.context = context
+        self.dataActor = dataActor
     }
     
     func getUsers(since: Int, perPage: Int) -> AnyPublisher<[User], Error> {
@@ -17,11 +17,11 @@ class UserRepositoryImpl: UserRepository {
                 guard let self = self else { return }
                 let users = dtos.map { $0.toDomain() }
                 
-                for user in users {
-//                    self.context.insert(user.toCachedModel())
+                Task {
+                    for user in users {
+                        await self.dataActor.save(user: user.toCachedModel())
+                    }
                 }
-                
-                try? self.context.save()
             })
             .map { $0.map { $0.toDomain() } }
             .catch { [weak self] error -> AnyPublisher<[User], Error> in
@@ -29,13 +29,14 @@ class UserRepositoryImpl: UserRepository {
                     return Fail(error: error).eraseToAnyPublisher()
                 }
                 
-                let descriptor = FetchDescriptor<CachedUser>(sortBy: [.init(\.id)])
-                let cachedUsers = (try? self.context.fetch(descriptor)) ?? []
-                let mapped = cachedUsers.map { User(cached: $0) }
-                
-                return Just(mapped)
-                    .setFailureType(to: Error.self)
-                    .eraseToAnyPublisher()
+                return Future<[User], Error> { promise in
+                    Task {
+                        let cachedUsers = await self.dataActor.fetchUsers()
+                        let mapped = cachedUsers.map { User(cached: $0) }
+                        promise(.success(mapped))
+                    }
+                }
+                .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
     }
