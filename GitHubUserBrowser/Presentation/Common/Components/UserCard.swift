@@ -8,7 +8,9 @@ struct UserCard: View {
     var body: some View {
         HStack(spacing: 12) {
             AsyncImage(url: URL(string: avatarUrl)) { image in
-                image.resizable()
+                image
+                    .resizable()
+                    .scaledToFill()
             } placeholder: {
                 Color.gray.opacity(0.3)
             }
@@ -20,24 +22,34 @@ struct UserCard: View {
                     .frame(width: 78, height: 78)
             )
             
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 6) {
                 Text(title)
                     .font(.headline)
+                
                 Divider()
-                Text(subtitle)
-                    .font(.subheadline)
-                    .foregroundColor(.blue)
-                    .underline()
-                    .lineLimit(1)
+                
+                HStack(spacing: 4) {
+                    if subtitle.starts(with: "http") {
+                        Text(subtitle)
+                            .foregroundColor(.blue)
+                            .underline()
+                            .lineLimit(1)
+                            .font(.subheadline)
+                    } else {
+                        Image(systemName: "location")
+                            .foregroundColor(.gray)
+                        Text(subtitle)
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                    }
+                }
             }
-            Spacer()
         }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white)
-                .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
-        )
+        .padding(.vertical, 12)
+        .padding(.horizontal)
+        .background(Color.white)
+        .cornerRadius(12)
+        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
     }
 }
 

@@ -11,25 +11,11 @@ struct DetailView: View {
             if let user = viewModel.userDetail {
                 ScrollView {
                     VStack(spacing: 16) {
-                        AsyncImage(url: URL(string: user.avatarUrl)) { image in
-                            image.resizable()
-                        } placeholder: {
-                            Color.gray.opacity(0.3)
-                        }
-                        .frame(width: 100, height: 100)
-                        .clipShape(Circle())
-                        
-                        Text(user.login)
-                            .font(.title)
-                            .bold()
-                        
-                        if let location = user.location {
-                            HStack {
-                                Image(systemName: "location")
-                                Text(location)
-                            }
-                            .foregroundColor(.gray)
-                        }
+                        UserCard(
+                            avatarUrl: user.avatarUrl,
+                            title: user.login,
+                            subtitle: user.location ?? "Unknown"
+                        )
                         
                         HStack(spacing: 24) {
                             FollowerStat(title: "Follower", count: user.followers)
